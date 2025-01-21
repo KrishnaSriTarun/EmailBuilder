@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate);
-let mongodb_uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/emailBuilder';
+let mongodb_uri = process.env.MONGODB_URI;
 // MongoDB Connection
 mongoose
       .connect(mongodb_uri)
