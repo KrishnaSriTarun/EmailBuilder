@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Email Templates</title>
+      <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+      <div class="template-container">
+            <!-- Display existing templates -->
+            <a href="/template/new">
+                  <div class="template empty-template">
+                        <h2>Add New Template</h2>
+                        <p>Click here to create a new template</p>
+                  </div>
+            </a>
+            <% for (let template of templates) { %>
+                  <a href="/template/<%= template._id %>">
+                        <div class="template">
+                              <h2><%= template.templateName %></h2>
+                              <p><%= template.configurations.title || 'No Title' %></p>
+                        </div>
+                  </a>
+            <% } %>
+      </div>
+</body>
+</html>

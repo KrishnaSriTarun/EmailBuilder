@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>Email Template</title>
+      <style>
+            body {
+                  margin: 0;
+                  padding: 0;
+                  background-color: #f4f4f4;
+                  font-family: Arial, sans-serif;
+            }
+            table {
+                  border-spacing: 0;
+                  width: 100%;
+            }
+            img {
+                  max-width: 100%;
+                  height: auto;
+            }
+            .email-container {
+                  width: 100%;
+                  max-width: 600px;
+                  margin: 0 auto;
+                  background-color: #ffffff;
+                  border: 1px solid #ddd;
+            }
+            .email-header {
+                  background-color: #007bff;
+                  color: #ffffff;
+                  text-align: center;
+                  padding: 15px;
+            }
+            .email-header h1 {
+                  margin: 0;
+                  font-size: 20px;
+            }
+            .email-body {
+                  padding: 20px;
+                  color: #333333;
+                  line-height: 1.6;
+            }
+            .email-footer {
+                  background-color: #f8f8f8;
+                  text-align: center;
+                  padding: 10px;
+                  font-size: 12px;
+                  color: #666666;
+            }
+            .button {
+                  display: inline-block;
+                  padding: 10px 15px;
+                  background-color: #007bff;
+                  color: #ffffff;
+                  text-decoration: none;
+                  border-radius: 4px;
+                  font-size: 14px;
+            }
+            .button:hover {
+                  background-color: #0056b3;
+            }
+            @media print {
+                  .no-print {
+                        display: none !important;
+                  }
+            }
+      </style>
+</head>
+
+<body>
+      <table class="email-container">
+            <tr>
+                  <td class="email-header">
+                        <h1>
+                              <%= template.templateName %>
+                        </h1>
+                  </td>
+            </tr>
+            <tr>
+                  <td class="email-body">
+                        <h1>
+                              <%= template.configurations.title %>
+                        </h1>
+                        <% if (template.configurations.imageUrls && template.configurations.imageUrls.length> 0) { %>
+                              <div>
+                                    <ul class="image-list">
+                                          <% template.configurations.imageUrls.forEach(url=> { %>
+                                                <li>
+                                                      <img src="<%= url %>" alt="Image" style="max-width:400px;">
+                                                </li>
+                                                <% }) %>
+                                    </ul>
+                              </div>
+                              <% } %>
+                                    <% if (template.configurations.content) { %>
+                                          <% template.configurations.content.split('\n').forEach((paragraph)=> { %>
+                                                <p>
+                                                      <%= paragraph %>
+                                                </p>
+                                                <% }) %>
+                                                      <% } %>
+                  </td>
+            </tr>
+            <tr>
+                  <td class="email-footer">
+                        <% if (template.configurations.footer) { %>
+                              <% template.configurations.footer.split('\n').forEach((paragraph)=> { %>
+                                    <p>
+                                          <%= paragraph %>
+                                    </p>
+                                    <% }) %>
+                                          <% } %>
+                  </td>
+            </tr>
+      </table>
+      <a href="/template/edit/<%= template._id %>" class="button no-print"
+            style="display:block; margin: 20px auto; width: 200px;">Edit</a>
+      <form action="/template/delete/<%= template._id %>" method="POST" class="no-print">
+            <a class="button" style="display:block; margin: 20px auto; width: 200px;">Delete</a>
+      </form>
+      <a href="/download-pdf/<%= template._id %>" class="button no-print"
+            style="display:block; margin: 20px auto; width: 200px;">Download PDF</a>
+</body>
+
+</html>

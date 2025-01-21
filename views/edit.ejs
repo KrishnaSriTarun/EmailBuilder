@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Edit Email Template</title>
+      <style>
+            body {
+                  font-family: Arial, sans-serif;
+                  margin: 0;
+                  padding: 0;
+                  background-color: #f4f4f4;
+            }
+
+            .container {
+                  max-width: 800px;
+                  margin: 20px auto;
+                  background-color: #ffffff;
+                  padding: 20px;
+                  border-radius: 8px;
+                  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            h1 {
+                  font-size: 24px;
+                  color: #333333;
+                  margin-bottom: 20px;
+            }
+
+            label {
+                  display: block;
+                  margin-bottom: 5px;
+                  font-weight: bold;
+            }
+
+            input[type="text"],
+            textarea,
+            input[type="file"] {
+                  width: 100%;
+                  padding: 10px;
+                  margin-bottom: 20px;
+                  border: 1px solid #cccccc;
+                  border-radius: 4px;
+                  font-size: 14px;
+            }
+
+            textarea {
+                  height: 100px;
+            }
+
+            .btn-container {
+                  text-align: right;
+            }
+
+            .btn {
+                  display: inline-block;
+                  padding: 10px 20px;
+                  background-color: #007bff;
+                  color: #ffffff;
+                  text-decoration: none;
+                  border-radius: 4px;
+                  font-size: 14px;
+                  cursor: pointer;
+            }
+
+            .btn:hover {
+                  background-color: #0056b3;
+            }
+
+            .btn.cancel {
+                  background-color: #666666;
+            }
+
+            .btn.cancel:hover {
+                  background-color: #444444;
+            }
+      </style>
+</head>
+<body>
+      <div class="container">
+            <h1>Edit Email Template</h1>
+            <form action="/template/update/<%= template._id %>" method="POST" enctype="multipart/form-data">
+                  <!-- Title -->
+                  <label for="title">Title:</label>
+                  <input type="text" id="title" name="title" value="<%= template.configurations.title %>" required>
+
+                  <!-- Content -->
+                  <label for="content">Content:</label>
+                  <textarea id="content" name="content" required><%= template.configurations.content %></textarea>
+
+                  <!-- Footer -->
+                  <label for="footer">Footer:</label>
+                  <textarea id="footer" name="footer"><%= template.configurations.footer %></textarea>
+
+                  <!-- Image Upload -->
+                  <label for="images">Upload Images (optional):</label>
+                  <input id="images" type="file" name="images" accept="image/*" multiple>
+
+                  <!-- Current Images -->
+                  <% if (template.configurations.imageUrls && template.configurations.imageUrls.length > 0) { %>
+                        <div>
+                              <p>Current Images:</p>
+                              <ul>
+                                    <% template.configurations.imageUrls.forEach(url => { %>
+                                          <li>
+                                                <img src="<%= url %>" alt="Image" style="max-width: 100px;">
+                                          </li>
+                                    <% }) %>
+                              </ul>
+                        </div>
+                  <% } %>
+
+                  <!-- Buttons -->
+                  <div class="btn-container">
+                        <a href="/templates" class="btn cancel">Cancel</a>
+                        <button type="submit" class="btn">Save</button>
+                  </div>
+            </form>
+      </div>
+</body>
+</html>
