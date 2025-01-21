@@ -23,18 +23,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.engine("ejs", ejsMate);
-
+let mongodb_uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/emailBuilder';
 // MongoDB Connection
 mongoose
-      .connect('mongodb://localhost:27017/emailBuilder')
+      .connect(mongodb_uri)
       .then(() => console.log('Connected to MongoDB'))
       .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 // Default Route
 app.get('/', (req, res) => {
-      res.send('Hello World!');
+      res.redirect('/getEmailLayout');
 });
 app.use('/', EmailBuilder);
+app.use("*", (req, res) => {
+      res.send("Page Not Found");
+});
 app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
 });

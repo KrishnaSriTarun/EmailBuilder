@@ -9,14 +9,14 @@
 <body>
       <div class="template-container">
             <!-- Display existing templates -->
-            <a href="/template/new">
+            <a href="/uploadImage">
                   <div class="template empty-template">
                         <h2>Add New Template</h2>
                         <p>Click here to create a new template</p>
                   </div>
             </a>
             <% for (let template of templates) { %>
-                  <a href="/template/<%= template._id %>">
+                  <a href="/uploadEmailConfig/<%= template._id %>">
                         <div class="template">
                               <h2><%= template.templateName %></h2>
                               <p><%= template.configurations.title || 'No Title' %></p>

@@ -1,5 +1,8 @@
 const EmailTemplate = require('../models/EmailBuilder');
 const upload = require('../cloudConfig');
+const path = require('path');
+const ejs = require('ejs');
+const puppeteer = require('puppeteer');
 module.exports.getEmailLayout = async (req, res) => {
       // Fetch all templates from the database
       const templates = await EmailTemplate.find({});
@@ -25,7 +28,7 @@ module.exports.saveEmailTemplate = async (req, res) => {
             });
             await newTemplate.save();
             console.log(newTemplate);
-            res.redirect('/home');
+            res.redirect('/getEmailLayout');
       } catch (error) {
             console.error(error);
             res.status(500).send('An error occurred while creating the template.');
@@ -42,7 +45,7 @@ module.exports.edit = async (req, res) => {
 module.exports.update = async (req, res) => {
       const id = req.params.id;
       const { title, content, footer } = req.body;
-      const imageFiles = req.files; 
+      const imageFiles = req.files;
       await EmailTemplate.findByIdAndUpdate(id, {
             configurations: {
                   title,
@@ -52,21 +55,19 @@ module.exports.update = async (req, res) => {
             },
       });
       console.log({ title, content, footer, imageFiles });
-      res.redirect('/templates');
+      res.redirect('/getEmailLayout');
 }
 module.exports.delete = async (req, res) => {
       await EmailTemplate.findByIdAndDelete(req.params.id);
-      res.redirect('/templates');
+      res.redirect('/getEmailLayout');
 }
 module.exports.downloadPdf = async (req, res) => {
       const templateId = req.params.templateId;
       const template = await EmailTemplate.findById(templateId);
-      const templatePath = path.join(__dirname, 'views', 'template.ejs');
+      const templatePath = path.resolve(__dirname, '..', 'views', 'template.ejs');
       try {
             const htmlContent = await new Promise((resolve, reject) => {
-                  ejs.renderFile(templatePath, {
-                        template: template,
-                  }, (err, str) => {
+                  ejs.renderFile(templatePath, { template }, (err, str) => {
                         if (err) reject(err);
                         else resolve(str);
                   });
@@ -80,10 +81,10 @@ module.exports.downloadPdf = async (req, res) => {
             });
             await browser.close();
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', `attachment; filename="EamilLayout.pdf"`);
+            res.setHeader('Content-Disposition', `attachment; filename="EmailLayout.pdf"`);
             res.end(pdfBuffer);
       } catch (error) {
             console.error('Error generating PDF:', error);
             res.status(500).send('Error generating PDF');
       }
-}
+};

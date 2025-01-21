@@ -119,9 +119,9 @@
       <a href="/template/edit/<%= template._id %>" class="button no-print"
             style="display:block; margin: 20px auto; width: 200px;">Edit</a>
       <form action="/template/delete/<%= template._id %>" method="POST" class="no-print">
-            <a class="button" style="display:block; margin: 20px auto; width: 200px;">Delete</a>
+            <button class="button" style="display:block; margin: 20px auto; width: 200px;">Delete</button>
       </form>
-      <a href="/download-pdf/<%= template._id %>" class="button no-print"
+      <a href="/renderAndDownloadTemplate/<%= template._id %>" class="button no-print"
             style="display:block; margin: 20px auto; width: 200px;">Download PDF</a>
 </body>
 
